@@ -1,12 +1,10 @@
 package applications.the4casters.microphonemodifier;
 
-import android.media.AudioRecord;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -59,9 +57,12 @@ public class MainActivityFragment extends Fragment implements AudioPlayback.Audi
             }
         });
 
-        GraphView graph2 = (GraphView) mainView.findViewById(R.id.graph);
+        GraphView graph = (GraphView) mainView.findViewById(R.id.graph);
+        graph.getViewport().setYAxisBoundsManual(true);
+        graph.getViewport().setMinY(0);
+        graph.getViewport().setMaxY(200);
         mSeries = new LineGraphSeries<>();
-        graph2.addSeries(mSeries);
+        graph.addSeries(mSeries);
 
 
         return mainView;
@@ -72,6 +73,7 @@ public class MainActivityFragment extends Fragment implements AudioPlayback.Audi
         mSeries.appendData(new DataPoint(graph2LastXValue, getRandom()), true, 640);
     }
 
+    private static final int GRAPH_DIVISION = 1;
     @Override
     public void onResume() {
         super.onResume();
@@ -80,10 +82,11 @@ public class MainActivityFragment extends Fragment implements AudioPlayback.Audi
             @Override
             public void run() {
                 if(audioPlayback.isRecording()){
-                    if(audioPlayback.audioBuffer != null) {
-                        for (int i = 0; i < audioPlayback.audioBuffer.length; i++) {
+                    if(audioPlayback.graphBuffer != null) {
+
+                        for (int i = 0; i < audioPlayback.graphBuffer.length; i+=GRAPH_DIVISION) {
                             graph2LastXValue += 1d;
-                            mSeries.appendData(new DataPoint(graph2LastXValue, audioPlayback.audioBuffer[i]), true, 640);
+                            mSeries.appendData(new DataPoint(graph2LastXValue, audioPlayback.graphBuffer[i]), true, audioPlayback.graphBuffer.length/GRAPH_DIVISION);
                         }
                     }
                 }

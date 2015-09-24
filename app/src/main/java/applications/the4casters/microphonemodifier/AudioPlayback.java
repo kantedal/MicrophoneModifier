@@ -14,7 +14,7 @@ import edu.emory.mathcs.jtransforms.fft.DoubleFFT_1D;
  */
 public class AudioPlayback {
 
-    public double[] audioBuffer;
+    public double[] graphBuffer;
 
     public interface AudioUpdateListener{
         void onAudioEvent(byte[] buffer);
@@ -64,10 +64,11 @@ public class AudioPlayback {
                 arec.startRecording();
                 atrack.play();
 
+                graphBuffer = new double[buffer.length];
+
                 while(true) {
                     if(isRecording) {
                         arec.read(buffer, 0, buffersize);
-
                         double[] fft = new double[buffer.length];
                         final int bytesPerSample = 2; // As it is 16bit PCM
                         final double amplification = 10.0; // choose a number as you like
@@ -80,20 +81,25 @@ public class AudioPlayback {
                                 }
                                 sample += v << (b * 8);
                             }
-                            double sample32 = amplification * (sample / 32768.0);
+                            Double sample32 = amplification * (sample / 32768.0);
                             fft[floatIndex] = sample32;
                         }
+
                         DoubleFFT_1D fft1d = new DoubleFFT_1D(buffer.length);
                         fft1d.realForward(fft);
 
-                        audioBuffer = fft;
-                        fft1d.realInverse(fft, true);
+                        for(int i=0; i<fft.length; i++) {
+                            graphBuffer[i] = fft[i];
+                        }
+
+                        fft1d.realInverse(fft, false);
 
                         byte[] output = new byte[fft.length];
-                        for(int i=0; i<fft.length; i++){
-                            output[i*2] = (byte) ((int) Math.round(fft[i]));
-                            output[i*2+1] = (byte) 0;
-                         }
+                        for(int i=0; i<fft.length/2; i++){
+                            short s1 = (short) fft[i];
+                            output[i * 2] += (byte) (s1 & 0xff);
+                            output[i * 2 + 1] += (byte) ((s1 >> 8) & 0xff);
+                        }
 
                         atrack.write(output, 0, output.length);
                     }
