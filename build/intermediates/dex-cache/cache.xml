@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="/Users/filles-dator/Desktop/MicrophoneModifier/app/libs/jtransforms-2.4.0.jar"
+        jumboMode="false"
+        revision="23.0.0 rc3"
+        sha1="20ab3d14a0375cc2baee9452b92b217aac7e3c57">
+        <dex dex="/Users/filles-dator/Desktop/MicrophoneModifier/app/build/intermediates/pre-dexed/debug/jtransforms-2.4.0-0dec4d6b234950279a6e16b173294aa930d85ded.jar" />
+    </item>
+
+</items>
