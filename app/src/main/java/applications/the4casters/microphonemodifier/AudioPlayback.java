@@ -10,6 +10,8 @@ import android.util.Log;
 import java.util.ArrayList;
 
 import applications.the4casters.microphonemodifier.effects.AudioEffect;
+import applications.the4casters.microphonemodifier.effects.Echo;
+import applications.the4casters.microphonemodifier.effects.Robotic;
 import edu.emory.mathcs.jtransforms.fft.DoubleFFT_1D;
 
 /**
@@ -96,6 +98,11 @@ public class AudioPlayback {
                 atrack.play();
 
                 graphBuffer = new double[buffer.length];
+<<<<<<< HEAD
+=======
+                Echo echo = new Echo();
+                Robotic robot = new Robotic();
+>>>>>>> origin/master
                 while(true) {
                     if(isRecording) {
                         arec.read(buffer, 0, buffersize);
@@ -115,13 +122,19 @@ public class AudioPlayback {
                             fft[floatIndex] = sample32;
                         }
 
+
+
+
                         DoubleFFT_1D fft1d = new DoubleFFT_1D(buffer.length);
                         fft1d.realForward(fft);
+
+                        //Test of effects
+                        echo.runEffect(fft);
+                        //robot.runEffect(fft);
 
                         double[] fftInverse = new double[graphBuffer.length];
                         for(int i=0; i<fft.length; i++) {
                             graphBuffer[i] = Math.abs(fft[i]);
-                            //fftInverse[graphBuffer.length-i-1] = fft[i];
                         }
                         //fft = fftInverse;
 
