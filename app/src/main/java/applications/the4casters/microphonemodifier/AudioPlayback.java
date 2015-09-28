@@ -7,6 +7,9 @@ import android.media.AudioTrack;
 import android.media.MediaRecorder;
 import android.util.Log;
 
+import java.util.ArrayList;
+
+import applications.the4casters.microphonemodifier.effects.AudioEffect;
 import edu.emory.mathcs.jtransforms.fft.DoubleFFT_1D;
 
 /**
@@ -14,18 +17,10 @@ import edu.emory.mathcs.jtransforms.fft.DoubleFFT_1D;
  */
 public class AudioPlayback {
 
+    private ArrayList<AudioEffect> audioEffects;
     public double[] graphBuffer;
 
-    public interface AudioUpdateListener{
-        void onAudioEvent(byte[] buffer);
-    }
-
-    private AudioUpdateListener mCallback;
-    public void setCallback(AudioUpdateListener audioUpdateListener){
-        mCallback = audioUpdateListener;
-    }
-
-    private final static int SAMPLING_RATE = 8000;
+    private final static int SAMPLING_RATE = 11025;
 
     private boolean isRecording;
     private AudioTrack atrack;
@@ -34,7 +29,30 @@ public class AudioPlayback {
 
     public AudioPlayback(){
         isRecording = false;
+        audioEffects = new ArrayList<>();
         run();
+    }
+
+    public void addAudioEffect(AudioEffect audioEffect){
+        audioEffects.add(audioEffect);
+    }
+
+    public void removeAudioEffect(int index){
+        audioEffects.remove(index);
+    }
+
+    public void moveAudioEffect(int from, int to){
+        AudioEffect toMove = audioEffects.get(from);
+        audioEffects.remove(from);
+        audioEffects.add(to, toMove);
+    }
+
+    public AudioEffect getAudioEffect(int index){
+        return audioEffects.get(index);
+    }
+
+    public int getEffectCount(){
+        return audioEffects.size();
     }
 
     public void record(){
@@ -88,9 +106,12 @@ public class AudioPlayback {
                         DoubleFFT_1D fft1d = new DoubleFFT_1D(buffer.length);
                         fft1d.realForward(fft);
 
+                        double[] fftInverse = new double[graphBuffer.length];
                         for(int i=0; i<fft.length; i++) {
-                            graphBuffer[i] = fft[i];
+                            graphBuffer[i] = Math.abs(fft[i]);
+                            //fftInverse[graphBuffer.length-i-1] = fft[i];
                         }
+                        //fft = fftInverse;
 
                         fft1d.realInverse(fft, false);
 

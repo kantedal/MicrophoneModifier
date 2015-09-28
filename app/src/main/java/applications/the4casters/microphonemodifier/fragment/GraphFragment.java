@@ -1,4 +1,4 @@
-package applications.the4casters.microphonemodifier;
+package applications.the4casters.microphonemodifier.fragment;
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
@@ -12,6 +12,8 @@ import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
 import java.util.Random;
+
+import applications.the4casters.microphonemodifier.R;
 
 /**
  * Created by jonas on 28.11.14.

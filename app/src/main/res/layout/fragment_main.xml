@@ -4,10 +4,15 @@
     android:orientation="vertical"
     tools:context=".MainActivityFragment">
 
-    <com.jjoe64.graphview.GraphView
+    <lecho.lib.hellocharts.view.LineChartView
+        android:id="@+id/chart"
         android:layout_width="match_parent"
-        android:layout_height="200dip"
-        android:id="@+id/graph" />
+        android:layout_height="200dip" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="200dp" />
 
     <FrameLayout
         android:id="@+id/fragment_main_playback_button"
