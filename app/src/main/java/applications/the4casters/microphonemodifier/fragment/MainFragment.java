@@ -1,17 +1,22 @@
 package applications.the4casters.microphonemodifier.fragment;
 
+import android.content.DialogInterface;
 import android.graphics.Color;
+import android.graphics.LinearGradient;
 import android.os.Build;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.h6ah4i.android.widget.advrecyclerview.animator.GeneralItemAnimator;
@@ -23,8 +28,10 @@ import java.util.List;
 import java.util.Random;
 
 import applications.the4casters.microphonemodifier.AudioPlayback;
+import applications.the4casters.microphonemodifier.MainActivity;
 import applications.the4casters.microphonemodifier.R;
 import applications.the4casters.microphonemodifier.adapter.EffectListAdapter;
+import applications.the4casters.microphonemodifier.effects.AudioEffect;
 import applications.the4casters.microphonemodifier.effects.Bandpass;
 import lecho.lib.hellocharts.model.Line;
 import lecho.lib.hellocharts.model.LineChartData;
@@ -46,6 +53,7 @@ public class MainFragment extends Fragment {
     private final Handler mHandler = new Handler();
     private Runnable mTimer;
 
+    private LinearLayout addEffectButton;
     private AudioPlayback audioPlayback;
     private FrameLayout playbackButton;
     private TextView playbackTextView;
@@ -63,6 +71,50 @@ public class MainFragment extends Fragment {
         View mainView = inflater.inflate(R.layout.fragment_main, container, false);
 
         audioPlayback = new AudioPlayback();
+
+        addEffectButton = (LinearLayout) mainView.findViewById(R.id.fragment_main_add_effect);
+        addEffectButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builderSingle = new AlertDialog.Builder(getActivity());
+                //builderSingle.setIcon(R.drawable.ic_launcher);
+                builderSingle.setTitle("Select an audio effect below");
+
+                final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
+                        getActivity(),
+                        android.R.layout.select_dialog_singlechoice);
+                arrayAdapter.add("Band-pass filter");
+                arrayAdapter.add("Echo effect");
+                arrayAdapter.add("Robotic effect");
+
+                builderSingle.setNegativeButton(
+                        "cancel",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+
+                builderSingle.setAdapter(
+                        arrayAdapter,
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                switch (which) {
+                                    case AudioEffect.BANDPASS:
+                                        audioPlayback.addAudioEffect(new Bandpass());
+                                        break;
+                                    case AudioEffect.ECHO:
+                                        audioPlayback.addAudioEffect(new Bandpass());
+                                        break;
+                                }
+                                mAdapter.notifyDataSetChanged();
+                            }
+                        });
+                builderSingle.show();
+            }
+        });
 
         playbackButton = (FrameLayout) mainView.findViewById(R.id.fragment_main_playback_button);
         playbackTextView = (TextView) mainView.findViewById(R.id.fragment_main_playback_text);
@@ -119,11 +171,6 @@ public class MainFragment extends Fragment {
         // drag & drop manager
         mRecyclerViewDragDropManager = new RecyclerViewDragDropManager();
 
-        audioPlayback.addAudioEffect(new Bandpass());
-        audioPlayback.addAudioEffect(new Bandpass());
-        audioPlayback.addAudioEffect(new Bandpass());
-        audioPlayback.addAudioEffect(new Bandpass());
-        audioPlayback.addAudioEffect(new Bandpass());
 
         final EffectListAdapter myItemAdapter = new EffectListAdapter(audioPlayback);
         mAdapter = myItemAdapter;
@@ -137,10 +184,6 @@ public class MainFragment extends Fragment {
         mRecyclerView.setItemAnimator(animator);
 
         mRecyclerViewDragDropManager.attachRecyclerView(mRecyclerView);
-
-        // for debugging
-//        animator.setDebug(true);
-//        animator.setMoveDuration(2000);
     }
 
     private static final int GRAPH_VALUE_COUNT = 50;
@@ -174,7 +217,7 @@ public class MainFragment extends Fragment {
                             audioValues.add(new PointValue(i, value));
                         }
 
-                        Line line = new Line(audioValues).setColor(Color.BLACK).setCubic(true).setStrokeWidth(1).setHasPoints(false);
+                        Line line = new Line(audioValues).setColor(Color.WHITE).setCubic(true).setStrokeWidth(1).setHasPoints(false);
                         List<Line> lines = new ArrayList<>();
                         lines.add(line);
 

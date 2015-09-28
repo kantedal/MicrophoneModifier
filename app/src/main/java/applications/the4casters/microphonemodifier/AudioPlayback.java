@@ -96,7 +96,6 @@ public class AudioPlayback {
                 atrack.play();
 
                 graphBuffer = new double[buffer.length];
-
                 while(true) {
                     if(isRecording) {
                         arec.read(buffer, 0, buffersize);
