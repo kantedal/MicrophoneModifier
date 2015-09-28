@@ -2,18 +2,67 @@
 <items version="2" >
 
     <item
-        jar="/Users/filles-dator/Desktop/MicrophoneModifier/MicrophoneModifier/app/build/intermediates/exploded-aar/com.h6ah4i.android.widget.advrecyclerview/advrecyclerview/0.7.4/jars/classes.jar"
+        jar="C:\Users\Albin\Documents\GitHub\MicrophoneModifier\app\libs\jtransforms-2.4.0.jar"
         jumboMode="false"
         revision="22.0.1"
-        sha1="9908aa4b44870601455496d750e8f22835ac4a2e">
-        <dex dex="/Users/filles-dator/Desktop/MicrophoneModifier/MicrophoneModifier/app/build/intermediates/pre-dexed/debug/classes-bfc4e85d2e7ec8c9e7e65336af7504db07326711.jar" />
+        sha1="20ab3d14a0375cc2baee9452b92b217aac7e3c57">
+        <dex dex="C:\Users\Albin\Documents\GitHub\MicrophoneModifier\app\build\intermediates\pre-dexed\debug\jtransforms-2.4.0-873a3bd2d6d208ff974ccd4ccd0c82014afe1ec2.jar" />
     </item>
     <item
-        jar="/Users/filles-dator/Desktop/MicrophoneModifier/MicrophoneModifier/app/build/intermediates/exploded-aar/com.android.support/recyclerview-v7/22.2.1/jars/classes.jar"
+        jar="C:\Users\Albin\Documents\GitHub\MicrophoneModifier\app\build\intermediates\exploded-aar\com.android.support\recyclerview-v7\22.2.1\jars\classes.jar"
         jumboMode="false"
         revision="22.0.1"
         sha1="3abb4b88f5a8a0584a9b01d3170d7165f12f8588">
-        <dex dex="/Users/filles-dator/Desktop/MicrophoneModifier/MicrophoneModifier/app/build/intermediates/pre-dexed/debug/classes-b7b766a9c9ec19861ef1c360bef91eefafe19195.jar" />
+        <dex dex="C:\Users\Albin\Documents\GitHub\MicrophoneModifier\app\build\intermediates\pre-dexed\debug\classes-f1c9ea3026290e7fb161eb833b77e48065b15e41.jar" />
+    </item>
+    <item
+        jar="C:\Users\Albin\Documents\GitHub\MicrophoneModifier\app\build\intermediates\exploded-aar\com.android.support\support-v4\22.2.1\jars\libs\internal_impl-22.2.1.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="c471eaaba13ff64f6e0383d1c30a9cdc9a97efeb">
+        <dex dex="C:\Users\Albin\Documents\GitHub\MicrophoneModifier\app\build\intermediates\pre-dexed\debug\internal_impl-22.2.1-3f36ece2d70f89a0a5d0e1783c4d8defd025999e.jar" />
+    </item>
+    <item
+        jar="C:\Users\Albin\AppData\Local\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\22.2.1\support-annotations-22.2.1.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="61a0ff5c29295ec56d7e0bd3d25d95dbf71b4b2b">
+        <dex dex="C:\Users\Albin\Documents\GitHub\MicrophoneModifier\app\build\intermediates\pre-dexed\debug\support-annotations-22.2.1-1fe061a74a65259d31d1f445336a2f4250864c80.jar" />
+    </item>
+    <item
+        jar="C:\Users\Albin\Documents\GitHub\MicrophoneModifier\app\build\intermediates\exploded-aar\com.jjoe64\graphview\4.0.1\jars\classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="37bf8de5b4f9e7e93006db783b9b3168e32e38e9">
+        <dex dex="C:\Users\Albin\Documents\GitHub\MicrophoneModifier\app\build\intermediates\pre-dexed\debug\classes-d081a3c366b1f8342d9666c913fd2ed8690f3da3.jar" />
+    </item>
+    <item
+        jar="C:\Users\Albin\Documents\GitHub\MicrophoneModifier\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\22.2.1\jars\classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="4486e953d1f35f8ccab098b1dd67146366d5f731">
+        <dex dex="C:\Users\Albin\Documents\GitHub\MicrophoneModifier\app\build\intermediates\pre-dexed\debug\classes-0075b6e7652e676fdefd2f52990664d0a27ddcb3.jar" />
+    </item>
+    <item
+        jar="C:\Users\Albin\Documents\GitHub\MicrophoneModifier\app\build\intermediates\exploded-aar\com.h6ah4i.android.widget.advrecyclerview\advrecyclerview\0.7.4\jars\classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="9908aa4b44870601455496d750e8f22835ac4a2e">
+        <dex dex="C:\Users\Albin\Documents\GitHub\MicrophoneModifier\app\build\intermediates\pre-dexed\debug\classes-2dd11db260869c58311af4ecccad721c030b9d42.jar" />
+    </item>
+    <item
+        jar="C:\Users\Albin\Documents\GitHub\MicrophoneModifier\app\build\intermediates\exploded-aar\com.android.support\support-v4\22.2.1\jars\classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="f8efd0096475e0daf054267b61544e10dc776503">
+        <dex dex="C:\Users\Albin\Documents\GitHub\MicrophoneModifier\app\build\intermediates\pre-dexed\debug\classes-c6ab323825ff7ac69c2cd004c23d825c63b4ff69.jar" />
+    </item>
+    <item
+        jar="C:\Users\Albin\Documents\GitHub\MicrophoneModifier\app\build\intermediates\exploded-aar\com.github.lecho\hellocharts-android\v1.5.7\jars\classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="1dee146886be934d98223f829af38077d44c5522">
+        <dex dex="C:\Users\Albin\Documents\GitHub\MicrophoneModifier\app\build\intermediates\pre-dexed\debug\classes-f1812db130169267a2a30ae0fb59e16bee05ce18.jar" />
     </item>
 
 </items>

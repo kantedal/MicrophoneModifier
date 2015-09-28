@@ -22,6 +22,11 @@ public class Bandpass extends AudioEffect {
 
     @Override
     public double[] runEffect(double[] fft) {
-        return new double[0];
+        for(int i = 0; i < fft.length; i++)
+        {
+            if(i < low_pass && i > high_pass)
+                fft[i] = 0;
+        }
+        return fft;
     }
 }
