@@ -5,12 +5,11 @@ import android.media.AudioManager;
 import android.media.AudioRecord;
 import android.media.AudioTrack;
 import android.media.MediaRecorder;
-import android.util.Log;
 
 import java.util.ArrayList;
 
 import applications.the4casters.microphonemodifier.effects.AudioEffect;
-import applications.the4casters.microphonemodifier.effects.Echo;
+import applications.the4casters.microphonemodifier.effects.ChangePitch;
 import applications.the4casters.microphonemodifier.effects.Robotic;
 import edu.emory.mathcs.jtransforms.fft.DoubleFFT_1D;
 
@@ -25,7 +24,7 @@ public class AudioPlayback {
     private final static int SAMPLING_RATE = 11025;
     private final static int LOWEST_FREQ = 300;
     private final static int HIGHEST_FREQ = 4000;
-    private final static int FFT_SIZE = 896;
+    public final static int FFT_SIZE = 448;
 
     private boolean isRecording;
     private AudioTrack atrack;
@@ -86,6 +85,12 @@ public class AudioPlayback {
         DoubleFFT_1D fft1d = new DoubleFFT_1D(buffersize/2);
         fft1d.realForward(fft);
 
+        //Albins test-skit
+        ChangePitch hej = new ChangePitch();
+        hej.runEffect(fft);
+        //Robotic ost = new Robotic();
+        //ost.runEffect(fft);
+
         for(AudioEffect audioEffect : audioEffects)
             audioEffect.runEffect(fft);
 
@@ -118,6 +123,7 @@ public class AudioPlayback {
                 double[] fft2 = new double[buffer.length/2];
                 double[] fft_smoothing1 = new double[buffer.length/2];
                 double[] fft_smoothing2 = new double[buffer.length/2];
+
 
                 while(true){
                     if(isRecording) {

@@ -7,6 +7,7 @@ public abstract class AudioEffect {
     public static final int BANDPASS = 0;
     public static final int ECHO = 1;
     public static final int ROBOTIC = 2;
+    public static final int CHANGEPITCH = 3;
 
     protected int effectType;
     public int getEffectType(){ return effectType; }
