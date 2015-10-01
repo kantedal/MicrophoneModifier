@@ -33,6 +33,8 @@ import applications.the4casters.microphonemodifier.R;
 import applications.the4casters.microphonemodifier.adapter.EffectListAdapter;
 import applications.the4casters.microphonemodifier.effects.AudioEffect;
 import applications.the4casters.microphonemodifier.effects.Bandpass;
+import applications.the4casters.microphonemodifier.effects.Echo;
+import applications.the4casters.microphonemodifier.effects.Robotic;
 import lecho.lib.hellocharts.model.Line;
 import lecho.lib.hellocharts.model.LineChartData;
 import lecho.lib.hellocharts.model.PointValue;
@@ -106,7 +108,10 @@ public class MainFragment extends Fragment {
                                         audioPlayback.addAudioEffect(new Bandpass());
                                         break;
                                     case AudioEffect.ECHO:
-                                        audioPlayback.addAudioEffect(new Bandpass());
+                                        audioPlayback.addAudioEffect(new Echo());
+                                        break;
+                                    case AudioEffect.ROBOTIC:
+                                        audioPlayback.addAudioEffect(new Robotic());
                                         break;
                                 }
                                 mAdapter.notifyDataSetChanged();
@@ -172,15 +177,15 @@ public class MainFragment extends Fragment {
         mRecyclerViewDragDropManager = new RecyclerViewDragDropManager();
 
 
-        final EffectListAdapter myItemAdapter = new EffectListAdapter(audioPlayback);
+        final EffectListAdapter myItemAdapter = new EffectListAdapter(audioPlayback, getActivity());
         mAdapter = myItemAdapter;
 
-        mWrappedAdapter = mRecyclerViewDragDropManager.createWrappedAdapter(myItemAdapter);      // wrap for dragging
+        mWrappedAdapter = mRecyclerViewDragDropManager.createWrappedAdapter(myItemAdapter);
 
         final GeneralItemAnimator animator = new RefactoredDefaultItemAnimator();
 
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mRecyclerView.setAdapter(mWrappedAdapter);  // requires *wrapped* adapter
+        mRecyclerView.setAdapter(mWrappedAdapter);
         mRecyclerView.setItemAnimator(animator);
 
         mRecyclerViewDragDropManager.attachRecyclerView(mRecyclerView);
