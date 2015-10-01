@@ -34,6 +34,7 @@ import applications.the4casters.microphonemodifier.adapter.EffectListAdapter;
 import applications.the4casters.microphonemodifier.effects.AudioEffect;
 import applications.the4casters.microphonemodifier.effects.Bandpass;
 import applications.the4casters.microphonemodifier.effects.Echo;
+import applications.the4casters.microphonemodifier.effects.Robot;
 import applications.the4casters.microphonemodifier.effects.Robotic;
 import lecho.lib.hellocharts.model.Line;
 import lecho.lib.hellocharts.model.LineChartData;
@@ -111,7 +112,7 @@ public class MainFragment extends Fragment {
                                         audioPlayback.addAudioEffect(new Echo());
                                         break;
                                     case AudioEffect.ROBOTIC:
-                                        audioPlayback.addAudioEffect(new Robotic());
+                                        audioPlayback.addAudioEffect(new Robot());
                                         break;
                                 }
                                 mAdapter.notifyDataSetChanged();
@@ -143,7 +144,7 @@ public class MainFragment extends Fragment {
         final Viewport v = new Viewport(audioChart.getMaximumViewport());
         v.bottom = -10.0f;
         v.top = 200.0f;
-        v.right = 640.0f;
+        v.right = 448.0f;
         v.left  = 0.0f;
         audioChart.setMaximumViewport(v);
         audioChart.setCurrentViewport(v);

@@ -96,7 +96,6 @@ public class AudioPlayback {
         fft1d.realInverse(fft, false);
     }
 
-
     private void run() {
         recordThread = new Thread(new Runnable() {
             public void run() {
@@ -113,57 +112,10 @@ public class AudioPlayback {
 
                 graphBuffer = new double[buffer.length];
 
-//                while(true) {
-//                    if(isRecording) {
-//                        arec.read(buffer, 0, buffersize);
-//
-//                        double[] fft = new double[buffer.length/2];
-//                        double[] fft_smoothing = new double[buffer.length];
-//
-//                        final int bytesPerSample = 2; // As it is 16bit PCM
-//                        final double amplification = 10.0; // choose a number as you like
-//                        for (int index = 0, floatIndex = 0; index < buffer.length; index += bytesPerSample, floatIndex++) {
-//                            double sample = 0;
-//                            for (int b = 0; b < bytesPerSample; b++) {
-//                                int v = buffer[index + b];
-//                                if (b < bytesPerSample - 1 || bytesPerSample == 1) {
-//                                    v &= 0xFF;
-//                                }
-//                                sample += v << (b * 8);
-//                            }
-//                            Double sample32 = amplification * (sample / 32768.0);
-//                            fft[floatIndex] = sample32;
-//                        }
-//
-//                        DoubleFFT_1D fft1d = new DoubleFFT_1D(buffersize/2);
-//                        fft1d.realForward(fft);
-//
-//                        for(AudioEffect audioEffect : audioEffects)
-//                            audioEffect.runEffect(fft);
-//
-//                        for(int i=0; i<fft.length; i++) {
-//                            graphBuffer[i] = Math.abs(fft[i]);
-//                        }
-//
-//                        fft1d.realInverse(fft, false);
-//
-//                        byte[] output = new byte[fft.length*2];
-//                        for(int i=0; i<fft.length; i++){
-//                            short s1 = (short) fft[i];
-//                            output[i * 2] += (byte) (s1 & 0xff);
-//                            output[i * 2 + 1] += (byte) ((s1 >> 8) & 0xff);
-//                        }
-//                        atrack.write(output, 0, output.length);
-//                    }
-//                }
-
                 final int bytesPerSample = 2; // As it is 16bit PCM
                 final double amplification = 10.0; // choose a number as you like
 
-                boolean evenBuffer = false;
-                boolean firstPartSmoothing = false;
-
-                double[] fft1 = new double[buffer.length/2];
+                double[] fft2 = new double[buffer.length/2];
                 double[] fft_smoothing1 = new double[buffer.length/2];
                 double[] fft_smoothing2 = new double[buffer.length/2];
 
@@ -171,7 +123,7 @@ public class AudioPlayback {
                     if(isRecording) {
                         arec.read(buffer, 0, buffersize);
 
-                        fft1 = new double[buffer.length/2];
+                        double[] fft1 = new double[buffer.length/2];
 
                         for (int index = 0, floatIndex = 0; index < buffer.length; index += bytesPerSample, floatIndex++) {
                             double sample = 0;
@@ -189,7 +141,25 @@ public class AudioPlayback {
                             if(floatIndex == buffer.length/4){
                                 runEffects(fft_smoothing1, buffersize);
 
-                                for(int i=0; i<fft_smoothing1.length; i++)
+                                double[] blendedOutput = new double[fft1.length];
+                                for(int i=0; i<blendedOutput.length; i++){
+                                    if(i < blendedOutput.length/2){
+                                        blendedOutput[i] = Math.abs(Math.cos(Math.PI*(i/(blendedOutput.length-1.0)))) * fft_smoothing2[i+blendedOutput.length/2] * 1.7 + Math.abs(Math.sin(Math.PI * (i / (blendedOutput.length-1.0)))) * fft2[i] * 1.7;
+                                    }else{
+                                        blendedOutput[i] = Math.abs(Math.cos(Math.PI*(i/(blendedOutput.length-1.0)))) * fft_smoothing1[i-blendedOutput.length/2] * 1.7 + Math.abs(Math.sin(Math.PI * (i / (blendedOutput.length-1.0)))) * fft2[i] * 1.7;
+                                    }
+                                }
+
+                                byte[] output = new byte[blendedOutput.length*2];
+                                for(int i=0; i<blendedOutput.length; i++){
+                                    short s1 = (short) Math.round(blendedOutput[i]);
+                                    output[i * 2] += (byte) (s1 & 0xff);
+                                    output[i * 2 + 1] += (byte) ((s1 >> 8) & 0xff);
+                                }
+                                atrack.write(output, 0, output.length);
+
+                                fft_smoothing2 = new double[buffer.length/2];
+                                for(int i=0; i<fft_smoothing2.length; i++)
                                     fft_smoothing2[i] = fft_smoothing1[i];
 
                                 fft_smoothing1 = new double[buffer.length/2];
@@ -201,27 +171,11 @@ public class AudioPlayback {
                                 fft_smoothing1[floatIndex-buffersize/4] = sample32;
                             }
                         }
-
                         runEffects(fft1, buffersize);
 
-                        double[] blendedOutput = new double[fft1.length];
-                        for(int i=0; i<blendedOutput.length; i++){
-                           if(i < blendedOutput.length/2){
-                               //blendedOutput[i] = Math.abs(Math.cos(Math.PI*(i/(blendedOutput.length-1.0)))) * fft_smoothing2[i+blendedOutput.length/2] + Math.abs(Math.sin(Math.PI * (i / (blendedOutput.length-1.0)))) * fft1[i];
-                            }else{
-                               //blendedOutput[i] = Math.abs(Math.cos(Math.PI*(i/(blendedOutput.length-1.0)))) * fft_smoothing1[i-blendedOutput.length/2] + Math.abs(Math.sin(Math.PI * (i / (blendedOutput.length-1.0)))) * fft1[i];
-                           }
-                        }
-
-                        byte[] output = new byte[blendedOutput.length*2];
-                        for(int i=0; i<blendedOutput.length; i++){
-                            short s1 = (short) blendedOutput[i];
-                            output[i * 2] += (byte) (s1 & 0xff);
-                            output[i * 2 + 1] += (byte) ((s1 >> 8) & 0xff);
-                        }
-                        atrack.write(output, 0, output.length);
-
-                        evenBuffer = !evenBuffer;
+                        fft2 = new double[buffer.length/2];
+                        for(int i=0; i<fft2.length; i++)
+                            fft2[i] = fft1[i];
                     }
                 }
             }
