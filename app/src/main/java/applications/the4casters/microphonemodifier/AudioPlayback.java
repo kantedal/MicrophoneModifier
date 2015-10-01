@@ -23,6 +23,9 @@ public class AudioPlayback {
     public double[] graphBuffer;
 
     private final static int SAMPLING_RATE = 11025;
+    private final static int LOWEST_FREQ = 300;
+    private final static int HIGHEST_FREQ = 4000;
+    private final static int FFT_SIZE = 896;
 
     private boolean isRecording;
     private AudioTrack atrack;
@@ -69,6 +72,16 @@ public class AudioPlayback {
         return isRecording;
     }
 
+    public static int indexToFrequency(int index){
+        double step_size = (HIGHEST_FREQ-LOWEST_FREQ)/FFT_SIZE;
+        return (int) Math.round(step_size * index + LOWEST_FREQ);
+    }
+
+    public static int frequencyToIndex(int frequency){
+        double step_size = (HIGHEST_FREQ-LOWEST_FREQ)/FFT_SIZE;
+        return (int) Math.round((frequency - LOWEST_FREQ) / step_size);
+    }
+
 
     private void run() {
         recordThread = new Thread(new Runnable() {
@@ -85,8 +98,11 @@ public class AudioPlayback {
                 atrack.play();
 
                 graphBuffer = new double[buffer.length];
+<<<<<<< HEAD
+=======
                 Echo echo = new Echo();
                 Robotic robot = new Robotic();
+>>>>>>> origin/master
                 while(true) {
                     if(isRecording) {
                         arec.read(buffer, 0, buffersize);
